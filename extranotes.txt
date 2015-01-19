@@ -1,0 +1,18 @@
+
+motivations 
+	Efficiency
+	Safety
+	Concurrency
+	Scalability
+	Fast development cycle
+	No surprises
+	A cute mascot
+
+
+bunların dışında go vet, go test, pprof, cgo var bahsedilebilecek - ya da present
+
+int int64 bile farklı tipler - Go encourages you to be explicit.
+
+Go's concurrency primitives make it easy to construct streaming data pipelines that make efficient use of I/O and multiple CPUs
+
+Timeout: Replicate the servers. Send requests to multiple replicas, and use the first response.

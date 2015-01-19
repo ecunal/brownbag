@@ -1,0 +1,371 @@
+golang
+
+
+* What is Go?
+
+General purpose programming language
+
+- Simple
+- Compiled
+- Statically typed
+- Concurrent
+- Garbage collected
+
+.image appenginegophercolor.jpg _ 450
+
+* History
+
+Development started in 2007 at Google as a 20% project by:
+
+- Robert Griesemer, Rob Pike, and Ken Thompson
+
+
+Announced to public in 2009 - open source
+
+go1 released in 2012
+
+Latest release in December 2014: go1.4
+
+* Hello world
+
+.play hello.go
+
+* Hello HTTP
+
+.code hellohttp.go
+
+* Workspace
+
+Everything is in folder structure - no `Makefile` s
+
+
+	$GOPATH
+	bin/
+	    hello                          # command executable
+	    outyet                         # command executable
+	pkg/
+	    linux_amd64/
+	        github.com/golang/example/
+	            stringutil.a           # package object
+	src/
+	    github.com/golang/example/
+	        .git/                      # Git repository metadata
+		hello/
+		    hello.go                   # command source
+		outyet/
+		    main.go                    # command source
+		    main_test.go               # test source
+		stringutil/
+		    reverse.go                 # package source
+		    reverse_test.go            # test source
+
+* package system
+
+- Every folder corresponds to a package
+- Typically last folder in the path is the package name
+- While importing, full path (after /src/) is used
+- Can give aliases inside source file
+	import v2c "v2appService/backend/common" 
+	import v2n "gov2native"
+
+- Executable files must have `package`main`
+
+.image gopherswim.jpg _ 250
+
+* go tool
+
+	$ go run hello.go
+
+compile and run a single file program
+
+	$ go get github.com/golang/example/
+
+fetch the repository and put it in the respective folder in workspace
+
+	$ go install
+
+build and install the package in current directory (and its dependencies) under $GOPATH/pkg
+
+	$ go fmt
+
+format source code in current directory - can also simplify the code on demand.
+
+	$ go fix
+
+find Go programs that use old APIs and rewrite them to use newer ones.
+
+* Design of Go
+
+- Variable initialization
+
+.code design.go /INIT START OMIT/,/INIT END OMIT/
+
+- Function declaration
+
+.code design.go /FUNC START OMIT/,/FUNC END OMIT/
+
+* Design of Go
+
+- No exceptions - error, defer, panic
+
+.play -edit panicdefer.go /^func foo/,/END OMIT/
+
+* Design of Go
+
+- No assertions
+- No operation and method overloading
+- No implicit conversions
+- No generics
+- Pointers exist, but no pointer arithmetic
+- Maps, strings, slices are native types
+
+.image gopherhelmet.jpg _ 300
+
+* Design of Go
+
+Error on unused import/variable
+
+Two reasons it is not a warning:
+
+- If it's worth complaining about, it's worth fixing in the code.
+- Having the compiler generate warnings can make compilation noisy, masking real errors that should be fixed.
+
+Workaround
+
+	import "unused"
+
+	// This declaration marks the import as used by referencing an
+	// item from the package.
+	var _ = unused.Item  // TODO: Delete before committing!
+
+	func main() {
+	    debugData := debug.Profile()
+	    _ = debugData // Used only during debugging.
+	    ....
+	}
+
+* Object-Oriented, not Type-Oriented
+
+- No type relations: inheritance etc
+- Public / private fields: upper / lower case
+
+	type Vertex struct {
+	    X, Y float64
+	    p string
+	}
+
+	func (v Vertex) Abs() float64 {
+	    return math.Sqrt( v.X*v.X + v.Y*v.Y )
+	}
+
+	v.Abs()
+
+	func (v *Vertex) add(n float64) {
+	    v.X += n
+	    v.Y += n
+	}
+
+	p := &Vertex{1.0, 2.0, "private string"}
+	p.add(3)
+
+
+* Design of Go
+
+- Methods can be defined on anything - not just structs
+
+.play type.go /^type/,/END OMIT/
+
+* Interfaces
+
+Simply
+
+- Sets of methods
+- Also a type
+
+In Go we design our abstractions in terms of what actions our types can execute.
+
+- Small, cohesive behaviour
+- Interfaces with a single method are quite common
+
+_No_ `implements` _keyword_
+
+.image biplane.jpg _ 250
+
+* Interfaces
+
+	// interface declaration
+	type Stringer interface {
+		String() string
+	}
+
+	// types do *not* declare to implement interfaces
+	type ColumnInfo struct {
+		Name    string
+		SqlType string
+	}
+
+	// instead, types implicitly satisfy an interface if they implement all required methods
+	func (c ColumnInfo) String() string {
+		return c.Name + " " + c.SqlType
+	}
+
+	// now we can use ColumnInfo in a print statement
+	c := ColumnInfo{"age", "integer"}
+	fmt.Println("Column information: " + c)
+
+* Empty Interface
+
+- `interface{}` : The interface that has no methods
+
+What we know about interfaces:
+
+- There is no implements keyword
+- All types implement at least 0 methods
+- Satisfying an interface is done automatically
+
+* Empty Interface
+
+_All_types_satisfy_the_empty_interface_
+
+
+	func DoSomething(v interface{}) {
+		// valid, v can be any value whatsoever
+	}
+
+
+* Concurrency - not Parallelism
+
+Concurrency is about dealing with lots of things at once.
+Parallelism is about doing lots of things at once.
+Concurrency is about structure, parallelism is about execution.
+
+- Concurrent: mouse, keyboard, display, and disk drivers in operating system.
+- Parallel: vector dot product, matrix multiply.
+
+Concurrency can enable parallelism but is useful on its own: modern programs must deal with many things at once.
+
+* Concurrency
+
+UNIX processes connected by pipes:
+
+	find ~/go/src/pkg | grep _test.go$ | xargs wc -l
+
+The Go analogue: goroutines connected by channels.
+
+.image gophercomplex1.jpg
+
+* Goroutines
+
+Independently executing function, launched by a go statement.
+
+- It has its own call stack, which grows and shrinks as required.
+- It's very cheap. It's practical to have thousands, even hundreds of thousands of goroutines.
+- It's not a thread.
+- There might be only one thread in a program with thousands of goroutines.
+
+* Goroutines
+
+	func doStuff(s string) {
+	}
+
+	func main() {
+	    // using a named function in a goroutine
+	    go doStuff("foobar")
+
+	    // using an anonymous inner function in a goroutine
+	    go func (x int) {
+	        // function body goes here
+	    }(5)
+	}
+
+* Channels
+
+Channels are a typed pipe for:
+
+- Synchronization
+- Communication
+
+	ch := make(chan int) 
+	ch <- 5             
+	v := <-ch          
+
+	// Read from channel until it is closed
+	for i := range ch {
+	    fmt.Println(i)
+	}
+
+
+* Channels
+
+	func doStuff(channel1, channel2 chan int) {
+	    select {
+	    case x := <- channel1:
+	        fmt.Println("We could read from channel1!")
+	    case x := <- channel2:
+	        fmt.Println("We could read from channel2")
+	    }
+	}
+
+`select` - `case` statement can be used for timeout mechanisms
+
+* Worker example
+
+A common task: many workers feeding from task pool.
+Traditionally, worker threads contend over a lock for work:
+
+	type Task struct {
+		// some state
+	}
+	type Pool struct {
+		Mu sync.Mutex
+		Tasks []Task
+	}
+	func worker(pool *Pool) { // many of these run concurrently
+	 	for {
+			pool.Mu.Lock()
+			task := pool.Tasks[0]
+			pool.Tasks = pool.Tasks[1:]
+			pool.mu.Unlock()
+			process(task)
+		}
+	}
+
+* Worker example
+
+A Go idiom: many worker goroutines receive tasks from a channel.
+
+	type Task struct {
+		// some state
+	}
+	func worker(in, out chan *Task) {
+		for {
+			t := <-in
+			process(t)
+			out <- t
+		}	
+	}
+	func main() {
+		pending, done := make(chan *Task), make(chan *Task)
+		go sendWork(pending)
+	 	for i := 0; i < 10; i++ {
+	 		go worker(pending, done)
+	 	}
+	 	consumeWork(done)
+	}
+
+* Concurrency: Philosophy
+
+- Goroutines give the efficiency of an asynchronous model, but you can write code in a synchronous style.
+- Easier to reason about: write goroutines that do their specific jobs well, and connect them with channels.
+- In practice, this yields simpler and more maintainable code.
+
+Think about the concurrency issues that matter:
+
+_“Don’t_communicate_by_sharing_memory._
+_Instead,_share_memory_by_communicating.”_
+
+* gopher
+
+.image gopherbw.png _ 500
+
+.caption _Gopher_ by [[http://www.reneefrench.com][Renée French]]
