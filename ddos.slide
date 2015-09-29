@@ -1,0 +1,42 @@
+DoS
+
+* Denial of Service
+
+An attempt to make a machine or network resource unavailable to its intended users, such as to temporarily or indefinitely interrupt or suspend services of a host connected to the Internet.
+
+* Distributed Denial of Service
+
+An attempt to make an online service unavailable by overwhelming it with traffic from multiple sources.
+
+* DDoS
+
+.iframe https://www.youtube.com/embed/NogCN78XN2w 600 1000
+
+* Easy to make one, yet highly effective
+
+- $150 can buy a week-long DDoS attack on the black market. TrendMicro Research
+- 1/3 of all downtime incidents are attributed to DDoS attacks. Verisign/Merril Research
+
+.link http://www.digitalattackmap.com/understanding-ddos/
+
+* wow ddos
+
+.link https://www.reddit.com/r/wow/comments/3hjot4/world_of_warcraft_servers_under_ddos_attack/
+
+* What we do during DDoS
+
+.iframe https://www.youtube.com/embed/8xYJVNLhvj4 600 1000
+
+source https://www.reddit.com/r/wow/comments/3hk32o/what_i_was_doing_during_the_ddos/
+
+* github ddos
+
+.link https://github.com/blog/1981-large-scale-ddos-attack-on-github-com
+
+* imgur 8chan attack
+
+.link https://www.reddit.com/r/technology/comments/3lw2g6/imgur_is_being_used_to_create_a_botnet_and_ddos/
+
+* slashdot effect / hug of death
+
+.link https://www.reddit.com/r/explainlikeimfive/comments/3c1yqo
