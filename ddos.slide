@@ -2,11 +2,79 @@ DoS
 
 * Denial of Service
 
-An attempt to make a machine or network resource unavailable to its intended users, such as to temporarily or indefinitely interrupt or suspend services of a host connected to the Internet.
+An attempt to make a machine or network resource unavailable to its intended users.
+
+*Symptoms*
+
+- Unusually slow network performance (opening files or accessing web sites)
+- Unavailability of a particular web site
+- Inability to access any web site
+- Dramatic increase in the number of spam emails received (e-mail bomb)
+- Disconnection of a wireless or wired internet connection
+- Long term denial of access to the web or any internet services
+
+* Attack Techniques
+
+* ICMP Flood
+
+Malformed ICMP packets aimed at consuming targets network and computational resources.
+
+*Smurf*attack*
+
+Intended victim's spoofed source IP are broadcast to a computer network using an IP broadcast address.
+
+*Ping*of*death*
+
+Sending malformed/malicious ping to a computer
+e.g. a ping that is bigger than max IPv4 message (65,535 bytes)
+
+*Ping*flood*
+
+Constantly sending pings, without waiting for a response, consuming bandwidth.
+
+* SYN Flood
+
+Sending multiple SYN request to a target's system without responding to ACK, so the target queues them all awaiting a timeout on the request.
+
+* TCP three-way handshake (normal)
+
+.image Tcp_normal.svg 400 _
+
+* SYN Flood
+
+.image Tcp_synflood.png 450 _ 
+
+* Teardrop Attack
+
+Sending overlapping IP fragments to a target, exploiting an overlapping IP fragment bug.
+
+Causes the TCP/IP fragmentation re-assembly code to improperly handle overlapping IP fragments. 
+
+* RUDY (R-U-Dead-Yet?)
+
+"Low and slow" attack
+
+- Browses the target website and detects embedded web forms
+- Sends legitimate HTTP POST request with an abnormally long 'content-length' header field
+- Send the content in small chunks and at a very low rate
+
+Eventually, the number and length of open sessions exhaust the target’s resources.
+
+The opposite: Slow read attack
+
+* PDoS (Phlashing)
+
+Targets hardware
+
+- Exploits security flaws which allow remote administration of hardware, such as routers, printers, etc.
+- Uses exploits to replace a device's firmware (flashing / bricking)
 
 * Distributed Denial of Service
 
 An attempt to make an online service unavailable by overwhelming it with traffic from multiple sources.
+
+.image stacheldraht.png 400 _ 
+.caption Stacheldraht
 
 * DDoS
 
@@ -14,29 +82,44 @@ An attempt to make an online service unavailable by overwhelming it with traffic
 
 * Easy to make one, yet highly effective
 
-- $150 can buy a week-long DDoS attack on the black market. TrendMicro Research
-- 1/3 of all downtime incidents are attributed to DDoS attacks. Verisign/Merril Research
+- $150 can buy a week-long DDoS attack on the black market. 
+- 1/3 of all downtime incidents are attributed to DDoS attacks. 
 
-.link http://www.digitalattackmap.com/understanding-ddos/
+Source: [[http://www.digitalattackmap.com]]
 
-* wow ddos
+* Current Attacks
 
-.link https://www.reddit.com/r/wow/comments/3hjot4/world_of_warcraft_servers_under_ddos_attack/
+.iframe http://www.digitalattackmap.com/embed#anim=1&color=0&country=ALL&list=0&time=16707&view=map 500 650
+
+* Github DDoS
+
+.image githubddos.png 300 _ 
+
+A obfuscated JS silently injected into the traffic of sites that use an analytics service from Baidu that forces their browser to constantly reload the two targeted GitHub pages:
+
+- [[https://github.com/greatfire]]
+- [[https://github.com/cn-nytimes]]
+
+* Slashdot effect
+
+Popular website links to a smaller site, causing a massive increase in traffic.
+
+Generally related to the dynamic part of the site (db, app etc.)
+
+"Reddit hug of death"
+
+* Imgur 8chan attack
+
+.iframe codewithexplanation.png 600 1000
 
 * What we do during DDoS
+
+* WoW DDoS
 
 .iframe https://www.youtube.com/embed/8xYJVNLhvj4 600 1000
 
 source https://www.reddit.com/r/wow/comments/3hk32o/what_i_was_doing_during_the_ddos/
 
-* github ddos
+* Bonus
 
-.link https://github.com/blog/1981-large-scale-ddos-attack-on-github-com
-
-* imgur 8chan attack
-
-.link https://www.reddit.com/r/technology/comments/3lw2g6/imgur_is_being_used_to_create_a_botnet_and_ddos/
-
-* slashdot effect / hug of death
-
-.link https://www.reddit.com/r/explainlikeimfive/comments/3c1yqo
+.link https://www.youtube.com/watch?v=I3KpSFHoBo4&list=PLEFn_PVNSM6jjJD5z4FOk337VDpZqy-A9
